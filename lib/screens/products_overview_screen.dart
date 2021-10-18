@@ -10,6 +10,7 @@ import 'package:flutter_complete_guide/widgets/badge.dart';
 import 'package:flutter_complete_guide/widgets/product_item.dart';
 import 'package:flutter_complete_guide/widgets/products_grid.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
 enum FilterOptions {
   Favourite,
@@ -23,6 +24,40 @@ class ProductOverViewScreen extends StatefulWidget {
 
 class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
   var _showOnlyFavourites = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void initState() {
+    super.initState();
+    //Provider.of<Products>(context).fetchAndSetProducts();
+    //of(context) doesnt work in initState
+    //hack:(can use this)
+    // Future.delayed(Duration.zero).then((value) {
+    //  Provider.of<Products>(context).fetchAndSetProducts();
+    // });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    //didChangeD executes after initstate but before build function
+    //runs many times unlike initstate so need to check so that
+    //it executes commands only once
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      Provider.of<Products>(context).fetchAndSetProducts().then((value) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,7 +103,11 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: ProductsGrid(_showOnlyFavourites),
+      body: _isLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProductsGrid(_showOnlyFavourites),
     );
   }
 }
