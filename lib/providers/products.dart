@@ -44,6 +44,8 @@ class Products with ChangeNotifier {
   ];
 
   //var _showFavouritesOnly = false;
+  final String authToken;
+  Products(this.authToken, this._items);
 
   List<Product> get items {
     // if (_showFavouritesOnly) {
@@ -73,13 +75,19 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    final url = Uri.https(
-        'shop-app-d907f-default-rtdb.firebaseio.com', '/products.json');
+    final url = Uri.https('shop-app-d907f-default-rtdb.firebaseio.com',
+        '/products.json');
     try {
       final response = await http.get(url);
 
-      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final extractedData =
+          json.decode((response.body)) as Map<String, dynamic>;
+
+      // print(extractedData);
+
+      // final extractedData =json.decode(response.body);
       //dynamic as nested maps
+
       final List<Product> loadedProducts = [];
       if (extractedData == null) {
         return;
@@ -95,6 +103,7 @@ class Products with ChangeNotifier {
       _items = loadedProducts;
       notifyListeners();
     } catch (error) {
+      print('error');
       throw error;
     }
   }

@@ -42,8 +42,9 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     //didChangeD executes after initstate but before build function
-    //runs many times unlike initstate so need to check so that
-    //it executes commands only once
+    //runs many times unlike initstate
+    //which runs only once
+    // so need to ensure we fetch only once in didChangeD
     if (_isInit) {
       setState(() {
         _isLoading = true;
@@ -65,6 +66,16 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
         title: Text('MyShop'),
         actions: [
           PopupMenuButton(
+            itemBuilder: (_) => [
+              PopupMenuItem(
+                child: Text('Only Favourites'),
+                value: FilterOptions.Favourite,
+              ),
+              PopupMenuItem(
+                child: Text('Show all'),
+                value: FilterOptions.All,
+              ),
+            ],
             onSelected: (FilterOptions selectedValue) {
               setState(() {
                 if (selectedValue == FilterOptions.Favourite) {
@@ -76,16 +87,6 @@ class _ProductOverViewScreenState extends State<ProductOverViewScreen> {
                 }
               });
             },
-            itemBuilder: (_) => [
-              PopupMenuItem(
-                child: Text('Only Favourites'),
-                value: FilterOptions.Favourite,
-              ),
-              PopupMenuItem(
-                child: Text('Show all'),
-                value: FilterOptions.All,
-              ),
-            ],
             icon: Icon(Icons.more_vert),
           ),
           Consumer<Cart>(

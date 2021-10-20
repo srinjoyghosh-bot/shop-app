@@ -20,7 +20,7 @@ class Product with ChangeNotifier {
       isFavourite: false})
       : this.isFavourite = isFavourite ?? false;
 
-  Future<void> toggleFavouriteStatus() async {
+  Future<void> toggleFavouriteStatus(String token) async {
     final oldStatus = isFavourite;
     isFavourite = !isFavourite;
     notifyListeners();

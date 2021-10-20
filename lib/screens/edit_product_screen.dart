@@ -15,6 +15,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
   final _imageUrlController = TextEditingController();
   final _imageUrlFocusNode = FocusNode();
   final _form = GlobalKey<FormState>();
+  //global key uniquely identifies the Form, and allows validation of the form in a later step
   var _editedProduct = Product(
     id: null,
     title: '',
