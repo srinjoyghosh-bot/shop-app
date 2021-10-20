@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/helpers/custom_route.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/screens/orders_screen.dart';
 import 'package:flutter_complete_guide/screens/user_products_screen.dart';
@@ -26,8 +27,11 @@ class AppDrawer extends StatelessWidget {
             leading: Icon(Icons.payment),
             title: Text('Orders'),
             onTap: () {
-              Navigator.of(context)
-                  .pushReplacementNamed(OrdersScreen.routeName);
+              // Navigator.of(context)
+              //     .pushReplacementNamed(OrdersScreen.routeName);
+              Navigator.of(context).pushReplacement(
+                  CustomRoute(builder: (ctx) => OrdersScreen()));
+                  //now this would have a fade transition
             },
           ),
           Divider(),

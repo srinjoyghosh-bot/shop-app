@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_complete_guide/helpers/custom_route.dart';
 import 'package:flutter_complete_guide/providers/auth.dart';
 import 'package:flutter_complete_guide/providers/cart.dart';
 import 'package:flutter_complete_guide/providers/orders.dart';
@@ -49,7 +50,12 @@ class MyApp extends StatelessWidget {
             theme: ThemeData(
                 primarySwatch: Colors.purple,
                 accentColor: Colors.deepOrange,
-                fontFamily: 'Lato'),
+                fontFamily: 'Lato',
+                pageTransitionsTheme:PageTransitionsTheme(builders: {
+                  TargetPlatform.android: CustomPageTransitionBuilder(),
+                  TargetPlatform.iOS: CustomPageTransitionBuilder(),
+                  //fade transition for all pages
+                }) ),
             home: auth.isAuth
                 ? ProductOverViewScreen()
                 : FutureBuilder(
@@ -60,6 +66,7 @@ class MyApp extends StatelessWidget {
                             : AuthScreen(),
                     future: auth.tryAutoLogin(),
                   ),
+                  
             routes: {
               ProductDetailScreen.routeName: (ctx) => ProductDetailScreen(),
               CartScreen.routeName: (ctx) => CartScreen(),
